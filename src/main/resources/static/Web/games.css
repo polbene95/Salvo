@@ -1,0 +1,119 @@
+/*------------------------------Body-------------------------------*/
+
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Lobster Two', cursive;
+}
+
+.body {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 5% 43% 4% 43% 5%;
+    grid-template-rows: 5% 10% 5% 75% 5%
+}
+
+.header {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    grid-column-end: 5;
+}
+
+.leaderboard-table {
+    grid-row-start: 4;
+    grid-row-end: 5;
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+.games-table {
+    grid-row-start: 4;
+    grid-row-end: 5;
+    grid-column-start: 4;
+    grid-column-end: 5;
+}
+
+.login-div {
+    grid-row-start: 4;
+    grid-row-end: 5;
+    grid-column-start: 2;
+    grid-column-end: 5;
+}
+
+
+/*------------------------------log In-------------------------------*/
+
+.login-div {
+    margin: 0 auto;
+    width: 395px;
+    height: 377px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 25px;
+    border: 2px solid red;
+}
+
+.login-inputs {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.login-inputs>input {
+    width: 45%;
+    text-align: center;
+}
+
+.login-buttons {}
+
+
+/*------------------------------Header-------------------------------*/
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.header-buttons {
+    width: 30%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+/*------------------------------Section-------------------------------*/
+
+.section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-btn {
+    width: 5%;
+}
+
+
+/*------------------------------Tables-------------------------------*/
+
+.table {
+    width: 90%;
+}
+
+.leaderboard-table tr>td {
+    width: 15%;
+    text-align: center;
+}
+
+.games-table tr>td {
+    width: 33%;
+    text-align: center;
+}

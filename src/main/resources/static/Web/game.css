@@ -1,0 +1,365 @@
+body {
+    font-family: 'Lobster Two', cursive;
+}
+
+
+/*Header*/
+
+.btn {
+    background: #8080804f;
+    border-radius: 75px;
+}
+
+.status-div {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+/*Tables Layout*/
+
+.section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+/*Tables desing*/
+
+table {
+    border-spacing: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+tr {
+    display: flex;
+    justify-content: space-around;
+}
+
+td {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    display: flex;
+}
+
+.table-bordered td.border-cell {
+    border: 1px solid #dee2e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*
+.table-bordered td.none-border-cell {
+    border: none;
+}
+*/
+
+
+/*Ship Creation*/
+
+.ship-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ship-selector-div {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ship-creation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rotate-btn {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.destroyer-creation {}
+
+.selected-ship {
+    -webkit-animation: fadeInFromNone 1.5s linear infinite;
+    -moz-animation: fadeInFromNone 1.5s linear infinite;
+    -o-animation: fadeInFromNone 1.5s linear infinite;
+    animation: fadeInFromNone 1.5s linear infinite;
+}
+
+@-webkit-keyframes fadeInFromNone {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeInFromNone {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeInFromNone {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInFromNone {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+/*Ship Location, Hitted, Sunked, Fail*/
+
+.fail {
+    background-image: url(images/fail-icon.jpg);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ship-location {
+    background-size: cover;
+    background-position: center;
+}
+
+.hitted {
+    background-image: url(images/hit-icon.png);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shot {
+    background-image: url(images/shot-icon.png);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*Ships*/
+
+
+/*Cruiser*/
+
+#cruiser.h {
+    background-image: url(images/cruiserHor.jpg);
+    width: 334px;
+    height: 73px;
+    background-size: cover;
+}
+
+#cruiser.v {
+    background-image: url(images/cruiserVer.jpg);
+    width: 73px;
+    height: 334px;
+    background-size: cover;
+}
+
+.cruiser-0-hor {
+    background-image: url(images/cruiserH0.jpg);
+}
+
+.cruiser-1-hor {
+    background-image: url(images/cruiserH1.jpg);
+}
+
+.cruiser-2-hor {
+    background-image: url(images/cruiserH2.jpg);
+}
+
+.cruiser-3-hor {
+    background-image: url(images/cruiserH3.jpg);
+}
+
+.cruiser-0-ver {
+    background-image: url(images/cruiserV0.jpg);
+}
+
+.cruiser-1-ver {
+    background-image: url(images/cruiserV1.jpg);
+}
+
+.cruiser-2-ver {
+    background-image: url(images/cruiserV2.jpg);
+}
+
+.cruiser-3-ver {
+    background-image: url(images/cruiserV3.jpg);
+}
+
+#submarine.h {
+    background-image: url(images/submarineHor.jpg);
+    width: 232px;
+    height: 70px;
+    background-size: cover;
+}
+
+#submarine.v {
+    background-image: url(images/submarineVer.jpg);
+    width: 70px;
+    height: 232px;
+    background-size: cover;
+}
+
+.submarine-0-hor {
+    background-image: url(images/submarineH0.jpg);
+}
+
+.submarine-1-hor {
+    background-image: url(images/submarineH1.jpg);
+}
+
+.submarine-2-hor {
+    background-image: url(images/submarineH2.jpg);
+}
+
+.submarine-3-hor {
+    background-image: url(images/submarineH3.jpg);
+}
+
+.submarine-0-ver {
+    background-image: url(images/submarineV0.jpg);
+}
+
+.submarine-1-ver {
+    background-image: url(images/submarineV1.jpg);
+}
+
+.submarine-2-ver {
+    background-image: url(images/submarineV2.jpg);
+}
+
+.submarine-3-ver {
+    background-image: url(images/submarineV3.jpg);
+}
+
+#destroyer.h {
+    background-image: url(images/destroyerHor.jpg);
+    width: 350px;
+    height: 84px;
+    background-size: cover;
+}
+
+#destroyer.v {
+    background-image: url(images/destroyerVer.jpg);
+    width: 84px;
+    height: 350px;
+    background-size: cover;
+}
+
+.destroyer-0-hor {
+    background-image: url(images/destroyerH0.jpg);
+}
+
+.destroyer-1-hor {
+    background-image: url(images/destroyerH1.jpg);
+}
+
+.destroyer-2-hor {
+    background-image: url(images/destroyerH2.jpg);
+}
+
+.destroyer-3-hor {
+    background-image: url(images/destroyerH3.jpg);
+}
+
+.destroyer-4-hor {
+    background-image: url(images/destroyerH4.jpg);
+}
+
+.destroyer-0-ver {
+    background-image: url(images/destroyerV0.jpg);
+}
+
+.destroyer-1-ver {
+    background-image: url(images/destroyerV1.jpg);
+}
+
+.destroyer-2-ver {
+    background-image: url(images/destroyerV2.jpg);
+}
+
+.destroyer-3-ver {
+    background-image: url(images/destroyerV3.jpg);
+}
+
+.destroyer-4-ver {
+    background-image: url(images/destroyerV4.jpg);
+}
+
+#boat.h {
+    background-image: url(images/boatHor.jpg);
+    width: 240px;
+    height: 80px;
+    background-size: cover;
+}
+
+#boat.v {
+    background-image: url(images/boatVer.jpg);
+    width: 80px;
+    height: 240px;
+    background-size: cover;
+}
+
+.boat-0-hor {
+    background-image: url(images/boatH0.jpg);
+}
+
+.boat-1-hor {
+    background-image: url(images/boatH1.jpg);
+}
+
+.boat-2-hor {
+    background-image: url(images/boatH2.jpg);
+}
+
+.boat-0-ver {
+    background-image: url(images/boatV0.jpg);
+}
+
+.boat-1-ver {
+    background-image: url(images/boatV1.jpg);
+}
+
+.boat-2-ver {
+    background-image: url(images/boatV2.jpg);
+}

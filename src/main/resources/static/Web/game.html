@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Battleship In Game</title>
+    <!--Bootrspa-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--Fonts-->
+   <link href="https://fonts.googleapis.com/css?family=Lobster+Two" rel="stylesheet">
+    <!--Main CSS-->
+    <link rel="stylesheet" type="text/css" href="game.css">
+</head>
+
+<body>
+    <div class="body" id="game">
+        <div class="container-fluid header">
+            <div class="back-button-div">
+                <a class="btn" href="/Web/games.html">Back to Menu</a>
+                <a @click="logout()" class="btn">log out</a>
+                <a class="btn" @click="postShips" v-if="placingShips">Place Ships</a>
+                <a class="btn" @click="postSalvoes" v-if="!placingShips && !waitingForOponent">Shoot em up</a>
+            </div>
+            <div class="status-div">
+                <p>{{userNickName}} vs {{enemyNickName}}</p>
+            </div>
+        </div>
+        
+        <div class="container section" v-show="placingShips == false">
+            <div id="user-div">
+                <table id="user-table" class="table-bordered">
+                    <tr>
+                        <td class="border-cell"></td>
+                        <td class="border-cell" v-for="n in numbers">{{n}}</td>
+                    </tr>
+                    <tr v-for="a,i in alphabet">
+                        <td class="border-cell">{{a}}</td>
+                        <td :id="'U'+a+n" v-for="n in numbers"></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="enemy-div">
+                <table id="enemy-table" class="table-bordered">
+                    <tr>
+                        <td class="border-cell"></td>
+                        <td class="border-cell" v-for="n in numbers">{{n}}</td>
+                    </tr>
+                    <tr v-for="a,i in alphabet">
+                        <td class="border-cell">{{a}}</td>
+                        <td :id="'E'+a+n" v-for="n in numbers" @click="selectCellToShot('E'+a+n)"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="ship-container container" v-show="placingShips == true">
+            <div id="placing-ship" class="placing-ship">
+                <table id="user-table" class="table-bordered">
+                    <tr>
+                        <td class="border-cell"></td>
+                        <td class="border-cell" v-for="n in numbers">{{n}}</td>
+                    </tr>
+                    <tr v-for="a,i in alphabet">
+                        <td class="border-cell">{{a}}</td>
+                        <td :id="'P'+a+n" v-for="n in numbers" @click="selectCell('P'+a+n)"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="ship-selector-div">
+                <div class="ship-harbour">
+                    <div class="ship-creation destroyer-creation h" id="destroyer" @click="shipSelected('destroyer')">
+                        <div class="rotate-btn" @click="rotateShip('destroyer')">R</div>
+                    </div>
+                </div>
+                <div class="ship-harbour">
+                    <div class="ship-creation cruiser-creation h" id="cruiser" @click="shipSelected('cruiser')">
+                        <div class="rotate-btn" @click="rotateShip('cruiser')">R</div>
+                    </div>
+                </div>
+                <div class="ship-harbour">
+                    <div class="ship-creation submarine-creation h" id="submarine" @click="shipSelected('submarine')">
+                        <div class="rotate-btn" @click="rotateShip('submarine')">R</div>
+                    </div>
+                </div>
+                <div class="ship-harbour">
+                    <div class="ship-creation boat-creation h" id="boat" @click="shipSelected('boat')">
+                        <div class="rotate-btn" @click="rotateShip('boat')">R</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!--Vue.js-->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!--Main JS-->
+    <script src="game.js"></script>
+</body>
+
+</html>

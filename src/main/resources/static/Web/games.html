@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Battleship Home</title>
+
+    <!--Bootrspa-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Lobster+Two" rel="stylesheet">
+    <!--Main CSS-->
+    <link rel="stylesheet" type="text/css" href="games.css">
+</head>
+
+<body>
+    <div class="body" id="games">
+        <div class="login-div" v-if="userLoged == false">
+
+            <div class="alert-login-fail" v-if="alertLogin == true">
+                {{error}}, try again
+            </div>
+            <img src="images/logo.jpg" alt="ship logo">
+            <div class="login-inputs">
+                <input type="text" name="username" id="username" placeholder="Username">
+                <input type="text" name="password" id="password" placeholder="Password">
+            </div>
+            <div class="login-buttons">
+                <div @click="login()" class="btn">log in</div>
+                <div @click="signup()" class="btn">sign up</div>
+            </div>
+        </div>
+        <div class="container header" v-if="userLoged == true">
+            <div class="welcome-text">
+                Welcome {{userName}}
+            </div>
+            <div class="header-buttons nav">
+                <div @click="logout()" class="btn">log out</div>
+                <div @click="createGame()" class="btn">new game</div>
+            </div>
+        </div>
+
+        <table class="table leaderboard-table" v-if="userLoged == true">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Username</td>
+                    <td>Total Score</td>
+                    <td>Wins</td>
+                    <td>Losses</td>
+                    <td>Ties</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="player in leaderboardJSON">
+                    <td>{{player.player_id}}</td>
+                    <td>{{player.player_username}}</td>
+                    <td>{{player.total_score}}</td>
+                    <td>{{player.win}}</td>
+                    <td>{{player.lose}}</td>
+                    <td>{{player.tie}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table games-table" v-if="userLoged == true">
+            <thead>
+                <tr>
+                    <td>Player 1</td>
+                    <td>Player 2</td>
+                    <td>Game Status</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="game in games">
+                    <td>
+                        {{game.playerOne}}
+                    </td>
+                    <td v-if="game.players == 2"> {{game.playerTwo}}
+                    </td>
+                    <td v-if="game.players == 1"></td>
+                    <td v-if="game.playerOne == userName || game.playerTwo == userName">
+                        <a :href="'/web/game.html?gp='+game.id">PLAY</a>
+                    </td>
+                    <td v-if="game.players == 1 && game.playerOne != userName">
+                        <p @click="joinGame(game.gameId)">JOIN</p>
+                    </td>
+                    <td v-if="game.players == 2 && (game.playerOne != userName  && game.playerTwo != userName )">
+                        IN GAME
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!--Vue.js-->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!--Main JS-->
+    <script src="games.js"></script>
+</body>
+
+</html>
