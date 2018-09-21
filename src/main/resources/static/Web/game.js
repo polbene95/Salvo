@@ -25,6 +25,12 @@ var game = new Vue({
         alphaNumeric: [],
         //Game Logic
         waitingForOponent: true,
+        myTurn: false,
+        gameFinished: false,
+        counter: 0,
+        gameStatus:"",
+        
+        
     },
     created: function () {
         this.getURL();
@@ -44,32 +50,52 @@ var game = new Vue({
                     game.data = json.game_view;
                     game.alphaNumeric = game.fillTable();
                     game.printNickName();
-                    if (game.data.ships.length != 0) {
-                        game.placingShips = false;
-                        game.userShips = game.data.ships;
-                        game.printShips(game.userShips, "U");
-                    }
-
-                    if (game.data.user_salvos.length != 0) {
-                        game.userSalvos = game.data.user_salvos;
-                        game.printSalvos(game.userSalvos, "E");
-                    }
-                    if (game.data.game.gameplayers.length == 2) {
-                        game.waitingForOponent = false;
-                        if (game.data.enemy_salvos.length != 0) {
-                            game.enemySalvos = game.data.enemy_salvos;
-                            game.printSalvos(game.enemySalvos, "U");
-
+                    game.salvoLocations = [];
+                    game.gameEnded(game.data.game.gameplayers);
+                        
+                        
+                        if (!game.gameFinished) {
+                            game.allShipsSunk();
+                            game.gameLogic();
+                        } else {
+                            game.gameLogic();
+                            game.gameOver();
                         }
-                        if (game.data.hits.length != 0) {
-                            game.printHits(game.data.hits)
-                        }
-                        game.enemySunkShips = game.printSunk(game.data.enemy_ship_status);
-                        game.userSunkShips = game.printSunk(game.data.user_ship_status);
-
-                    }
+                   
                 })
                 .catch(e => console.log(e))
+        },
+        gameLogic: function () {
+            if (this.data.ships.length != 0) {
+                this.placingShips = false;
+                this.userShips = this.data.ships;
+                this.printShips(this.userShips, "U");
+            }
+            if (this.data.user_salvos.length != 0) {
+                this.userSalvos = this.data.user_salvos;
+                this.printSalvos(this.userSalvos, "E");
+            }
+            if (this.data.game.gameplayers.length == 2) {
+                this.waitingForOponent = false;
+                this.myTurn = this.data.my_turn;
+                if (this.data.enemy_salvos.length != 0) {
+                    this.enemySalvos = this.data.enemy_salvos;
+                    this.printSalvos(this.enemySalvos, "U");
+
+                }
+                if (this.data.hits.length != 0) {
+                    this.printHits(this.data.hits)
+                }
+                this.enemySunkShips = this.printSunk(this.data.enemy_ship_status);
+                this.userSunkShips = this.printSunk(this.data.user_ship_status);
+                this.addSunkClass(this.enemySunkShips, "E")
+                this.addSunkClass(this.userSunkShips, "U")
+
+            }
+            
+            if (!this.myTurn && !this.gameFinished) {
+                setTimeout(this.getData(), 2000);
+            }
         },
         fillTable: function () {
             let array = [];
@@ -361,10 +387,54 @@ var game = new Vue({
             var sunkShips = [];
             for (let i = 0; i < array.length; i++) {
                 if (array[i].sunk) {
-                    sunkShips.push(array[i].type)
+                    let locations = array[i]["ship-location"]
+                    for (let j = 0; j < locations.length; j++) {
+                        sunkShips.push(locations[j]);
+                    }
                 }
             }
             return sunkShips;
+        },
+        addSunkClass: function (array, letter) {
+            for (let i = 0; i < array.length; i++) {
+                document.getElementById(letter + array[i]).setAttribute("class", "sunk");
+            }
+        },
+        gameEnded: function (gameplayers) {
+            for (let i = 0; i < gameplayers.length; i++) {
+                if (gameplayers[i].score != null) {
+                    this.gameFinished = true;
+                }
+            }
+        },
+        countSunks: function (array) {
+            let counter = 0;
+            for (var i = 0; i < array.length; i++) {
+                if (array[i].sunk ==  true) {
+                    counter++
+                }
+            }
+            return counter;
+        },
+        allShipsSunk:  function () {
+            var userTurn  = this.data.user_turn;
+            var enemyTurn = this.data.enemy_turn;
+            if (userTurn == enemyTurn) {
+                if (this.countSunks(this.data.user_ship_status) == 4 || this.countSunks(this.data.enemy_ship_status) == 4) {
+                    this.getData();
+                }
+            }
+        },
+        gameOver: function () {
+            console.log(this.data.user_score)
+            if (this.data.user_score == 1) {
+                this.gameStatus = "You win"
+            } else if (this.data.user_score == 0) {
+                this.gameStatus = "You lose"
+            } else {
+               this.gameStatus = "It's a tie" 
+            }
+            
         },
     },
 })

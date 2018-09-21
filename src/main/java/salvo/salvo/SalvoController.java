@@ -7,9 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 @RestController
 @RequestMapping("/api")
@@ -93,9 +95,11 @@ public class SalvoController {
             Map<String,Object> gameViewMap = new LinkedHashMap<>();
             if (gamePlayer.getGame().getGamePlayers().size() == 2) {
                 GamePlayer enemy = enemyGamePlayer(gamePlayer);
-                allSunk(gamePlayer);
                 sinkShip(gamePlayer);
                 sinkShip(enemy);
+                if (gamePlayer.getScores() == null) {
+                    allSunk(gamePlayer, getLastTurn(gamePlayer), getLastTurn(enemy));
+                }
                 gameViewMap.put("enemy_salvos", getSalvoInfo(enemy));
                 gameViewMap.put("enemy_ship_status", enemy.getShips()
                         .stream()
@@ -106,6 +110,8 @@ public class SalvoController {
                         .map(salvo -> getHits(salvo))
                         .collect(toList()));
                 gameViewMap.put("enemy_turn", getLastTurn(enemy));
+                if (enemy.getScores() != null)
+                gameViewMap.put("enemy_score", enemy.getScores().getScore());
                 gameViewMap.put("my_turn", displayTurn(gamePlayer));
             }
             gameViewMap.put("user_id", gamePlayerId);
@@ -120,6 +126,8 @@ public class SalvoController {
                     .map(ship -> shipStatus(ship))
                     .collect(toList()));
             gameViewMap.put("user_turn", getLastTurn(gamePlayer));
+            if (gamePlayer.getScores() != null)
+            gameViewMap.put("user_score", gamePlayer.getScores().getScore());
 
             return new ResponseEntity<Map<String, Object>>(makeMap("game_view", gameViewMap),HttpStatus.OK);
         } else {
@@ -339,46 +347,52 @@ public class SalvoController {
 
             Set<Ship> enemyShips = enemy.getShips();
             List<String> playerSalvos = getSalvoLocations(gamePlayer);
-            enemyShips.stream().filter(ship -> !ship.getSunk())
+            enemyShips.stream()
+                    .filter(ship -> !ship.getSunk())
                     .forEach(ship -> {
                         shipIsSunk(playerSalvos, ship);
                     });
         }
     }
 
-    private void allSunk (GamePlayer gamePlayer) {
-        GamePlayer enemy = enemyGamePlayer(gamePlayer);
-        GamePlayer user = gamePlayer;
+    private void allSunk (GamePlayer gamePlayer, Integer userTurn, Integer enemyTurn) {
+        if (enemyGamePlayer(gamePlayer) != null && userTurn == enemyTurn) {
+                setFinalScore(gamePlayer);
+        }
+    }
 
-        if (enemy != null) {
-            Set<Ship> enemyShips = enemy.getShips();
-            Set<Ship> userShips = user.getShips();
-            List<String> arrayOfSunkEnemy = new ArrayList<>();
-            List<String> arrayOfSunkUser = new ArrayList<>();
-            for (Ship ship : userShips) {
-                if (ship.getSunk()) {
-                    arrayOfSunkUser.add(ship.getType());
-                }
-            }
-            for (Ship ship : enemyShips) {
-                if (ship.getSunk()) {
-                    arrayOfSunkEnemy.add(ship.getType());
-                }
-            }
+    private void setFinalScore(GamePlayer gamePlayer) {
+        Boolean user = allShipsSunk(arrayOfSunk(gamePlayer.getShips()));
+        Boolean enemy = allShipsSunk(arrayOfSunk(enemyGamePlayer(gamePlayer).getShips()));
+        if (!user && enemy){
+            scoreRepository.save(setScore(gamePlayer,0.0));
+        } else if (user && !enemy){
+            scoreRepository.save(setScore(gamePlayer,1.0));
+        } else if (user && enemy) {
+            scoreRepository.save(setScore(gamePlayer,0.5));
+        }
+    }
 
-            if (arrayOfSunkUser.size() == 4){
-                Score enemyScore = new Score(1, enemy.getPlayer(),enemy.getGame());
-                Score userScore = new Score(0,user.getPlayer(),user.getGame());
-                scoreRepository.save(enemyScore);
-                scoreRepository.save(userScore);
-            }
-            if (arrayOfSunkEnemy.size() == 4){
-                Score enemyScore = new Score(0, enemy.getPlayer(),enemy.getGame());
-                Score userScore = new Score(1,user.getPlayer(),user.getGame());
-                scoreRepository.save(enemyScore);
-                scoreRepository.save(userScore);
+    private Score setScore(GamePlayer gamePlayer, Double score) {
+        return new Score(score, gamePlayer.getPlayer(), gamePlayer.getGame());
+    }
+
+    private List<String> arrayOfSunk(Set<Ship> ships) {
+        List<String> arrayOfSunk = new ArrayList<>();
+        for (Ship ship : ships) {
+            if (ship.getSunk()) {
+                arrayOfSunk.add(ship.getType());
             }
         }
+        return arrayOfSunk;
+    }
+
+    private Boolean allShipsSunk (List<String> arrayOfSunks) {
+        Boolean allSunk = false;
+        if (arrayOfSunks.size() == 4) {
+            allSunk = true;
+        }
+        return allSunk;
     }
 
     private Map<String,Object> shipStatus (Ship ship) {
@@ -386,10 +400,13 @@ public class SalvoController {
 
         shipMap.put("type", ship.getType());
         shipMap.put("sunk", ship.getSunk());
+        if (ship.getSunk() == true) {
+            shipMap.put("ship-location", ship.getLocation());
+        }
         return shipMap;
     }
 
-    //DTO\
+    //DTO
     private Map<String, Object> getGame (Game game) {
         Map<String, Object> gameMap = new LinkedHashMap<>();
         gameMap.put("game_id", game.getId());
@@ -407,7 +424,7 @@ public class SalvoController {
         if (gamePlayer.getScores() != null) {
             gamePlayersMap.put("score", gamePlayer.getScores().getScore());
         } else {
-            gamePlayersMap.put("score", 0.0);
+            gamePlayersMap.put("score", null);
         }
         return gamePlayersMap;
     }

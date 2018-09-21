@@ -51,14 +51,6 @@ td {
     align-items: center;
 }
 
-
-/*
-.table-bordered td.none-border-cell {
-    border: none;
-}
-*/
-
-
 /*Ship Creation*/
 
 .ship-container {
@@ -168,6 +160,15 @@ td {
 
 .shot {
     background-image: url(images/shot-icon.png);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sunk {
+    background-image: url(images/sunk-icon.png);
+    background-color: red;
     background-size: cover;
     display: flex;
     justify-content: center;
@@ -362,4 +363,15 @@ td {
 
 .boat-2-ver {
     background-image: url(images/boatV2.jpg);
+}
+
+/*Game Logic*/
+
+.zoom-out {
+    transition: transform 2s;
+    transform: scale(0.5);
+}
+.zoom-in {
+   transition: transform 2s;
+    transform: scale(1); 
 }

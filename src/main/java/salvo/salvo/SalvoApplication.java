@@ -77,7 +77,7 @@ public class SalvoApplication {
 
 			List<String> shipLocation1 = Arrays.asList("A1","A2","A3","A4","A5");
 			List<String> shipLocation2 = Arrays.asList("C5","D5","E5","F5");
-			List<String> shipLocation3 = Arrays.asList("H1","H2","H3");
+			List<String> shipLocation3 = Arrays.asList("H1","H2","H3","H4");
 			List<String> shipLocation4 = Arrays.asList("G7","H7","I7");
 
 			List<String> salvoLocation1 = shipLocation1;
@@ -108,13 +108,17 @@ public class SalvoApplication {
 
 			Salvo salvo1 = new Salvo(salvoLocation1,1,gamePlayer1);
 			Salvo salvo2 = new Salvo(salvoLocation2,2,gamePlayer1);
-			Salvo salvo3 = new Salvo(salvoLocation1,1,gamePlayer2);
-			Salvo salvo4 = new Salvo(salvoLocation4,2,gamePlayer2);
+			Salvo salvo3 = new Salvo(salvoLocation3,3,gamePlayer1);
+			Salvo salvo4 = new Salvo(salvoLocation1,1,gamePlayer2);
+			Salvo salvo5 = new Salvo(salvoLocation2,2,gamePlayer2);
+			Salvo salvo6 = new Salvo(salvoLocation3,3,gamePlayer2);
 
 			salvoRepository.save(salvo1);
 			salvoRepository.save(salvo2);
 			salvoRepository.save(salvo3);
 			salvoRepository.save(salvo4);
+			salvoRepository.save(salvo5);
+			salvoRepository.save(salvo6);
 
 //			Score score1 = new Score(1, player1, game1);
 //			Score score2 = new Score(0, player2, game1);

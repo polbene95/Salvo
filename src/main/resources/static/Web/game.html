@@ -7,7 +7,7 @@
     <!--Bootrspa-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!--Fonts-->
-   <link href="https://fonts.googleapis.com/css?family=Lobster+Two" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster+Two" rel="stylesheet">
     <!--Main CSS-->
     <link rel="stylesheet" type="text/css" href="game.css">
 </head>
@@ -19,15 +19,14 @@
                 <a class="btn" href="/Web/games.html">Back to Menu</a>
                 <a @click="logout()" class="btn">log out</a>
                 <a class="btn" @click="postShips" v-if="placingShips">Place Ships</a>
-                <a class="btn" @click="postSalvoes" v-if="!placingShips && !waitingForOponent">Shoot em up</a>
+                <a class="btn" @click="postSalvoes" v-if="!placingShips && !waitingForOponent && myTurn">Shoot em up</a>
             </div>
             <div class="status-div">
                 <p>{{userNickName}} vs {{enemyNickName}}</p>
             </div>
         </div>
-        
-        <div class="container section" v-show="placingShips == false">
-            <div id="user-div">
+        <div class="container section" v-show="placingShips == false && gameFinished == false">
+            <div id="user-div" :class="{'zoom-out': myTurn,'zoom-in': !myTurn}">
                 <table id="user-table" class="table-bordered">
                     <tr>
                         <td class="border-cell"></td>
@@ -39,7 +38,7 @@
                     </tr>
                 </table>
             </div>
-            <div id="enemy-div">
+            <div id="enemy-div" :class="{'zoom-out': !myTurn, 'zoom-in': myTurn }">
                 <table id="enemy-table" class="table-bordered">
                     <tr>
                         <td class="border-cell"></td>
@@ -52,7 +51,7 @@
                 </table>
             </div>
         </div>
-        <div class="ship-container container" v-show="placingShips == true">
+        <div class="ship-container container" v-show="placingShips == true && gameFinished == false">
             <div id="placing-ship" class="placing-ship">
                 <table id="user-table" class="table-bordered">
                     <tr>
@@ -87,6 +86,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="container game-over" v-if="placingShips == false && gameFinished == true">
+            <p>{{gameStatus}}</p>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
