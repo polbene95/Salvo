@@ -5,6 +5,11 @@ body {
 
 /*Header*/
 
+.header {
+    border-bottom: 1px solid black;
+    padding: 1% 0;
+}
+
 .btn {
     background: #8080804f;
     border-radius: 75px;
@@ -14,13 +19,28 @@ body {
     width: 100%;
     display: flex;
     justify-content: space-around;
+    align-items: center;
+    padding: 1%;
+}
+
+.status-div > p {
+    margin: 0;
+    display: flex;
+    width: 100%;
+    font-size: 1.7rem;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.status-div > span {
+    font-size: 1rem;
 }
 
 /*Tables Layout*/
 
 .section {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     width: 100%;
 }
 
@@ -38,8 +58,8 @@ tr {
 }
 
 td {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     font-size: 2rem;
     display: flex;
 }
@@ -77,8 +97,6 @@ td {
     font-weight: bold;
 }
 
-.destroyer-creation {}
-
 .selected-ship {
     -webkit-animation: fadeInFromNone 1.5s linear infinite;
     -moz-animation: fadeInFromNone 1.5s linear infinite;
@@ -90,9 +108,11 @@ td {
     0% {
         opacity: 0.3;
     }
+
     50% {
         opacity: 0.5;
     }
+
     100% {
         opacity: 1;
     }
@@ -102,9 +122,11 @@ td {
     0% {
         opacity: 0.3;
     }
+
     50% {
         opacity: 0.5;
     }
+
     100% {
         opacity: 1;
     }
@@ -114,9 +136,11 @@ td {
     0% {
         opacity: 0.3;
     }
+
     50% {
         opacity: 0.5;
     }
+
     100% {
         opacity: 1;
     }
@@ -126,9 +150,11 @@ td {
     0% {
         opacity: 0.3;
     }
+
     50% {
         opacity: 0.5;
     }
+
     100% {
         opacity: 1;
     }
@@ -371,7 +397,25 @@ td {
     transition: transform 2s;
     transform: scale(0.5);
 }
+
 .zoom-in {
-   transition: transform 2s;
-    transform: scale(1); 
+    transition: transform 2s;
+    transform: scale(1);
+}
+
+/*Game Over*/
+
+.game-over {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-around;
+    align-items: center;
+}
+
+.game-over > p {
+    margin: 0;
+    font-size: 3rem;
 }

@@ -40,11 +40,10 @@
                 <div @click="createGame()" class="btn">new game</div>
             </div>
         </div>
-
         <table class="table leaderboard-table" v-if="userLoged == true">
             <thead>
                 <tr>
-                    <td>ID</td>
+<!--                    <td>ID</td>-->
                     <td>Username</td>
                     <td>Total Score</td>
                     <td>Wins</td>
@@ -54,7 +53,7 @@
             </thead>
             <tbody>
                 <tr v-for="player in leaderboardJSON">
-                    <td>{{player.player_id}}</td>
+<!--                    <td>{{player.player_id}}</td>-->
                     <td>{{player.player_username}}</td>
                     <td>{{player.total_score}}</td>
                     <td>{{player.win}}</td>
@@ -80,13 +79,13 @@
                     </td>
                     <td v-if="game.players == 1"></td>
                     <td v-if="game.playerOne == userName || game.playerTwo == userName">
-                        <a :href="'/web/game.html?gp='+game.id">PLAY</a>
+                        <p :href="'/web/game.html?gp='+game.id">PLAY</p>
                     </td>
                     <td v-if="game.players == 1 && game.playerOne != userName">
                         <p @click="joinGame(game.gameId)">JOIN</p>
                     </td>
                     <td v-if="game.players == 2 && (game.playerOne != userName  && game.playerTwo != userName )">
-                        IN GAME
+                        <p>IN GAME</p>
                     </td>
                 </tr>
             </tbody>

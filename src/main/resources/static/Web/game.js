@@ -53,7 +53,6 @@ var game = new Vue({
                     game.salvoLocations = [];
                     game.gameEnded(game.data.game.gameplayers);
                         
-                        
                         if (!game.gameFinished) {
                             game.allShipsSunk();
                             game.gameLogic();
@@ -61,7 +60,6 @@ var game = new Vue({
                             game.gameLogic();
                             game.gameOver();
                         }
-                   
                 })
                 .catch(e => console.log(e))
         },

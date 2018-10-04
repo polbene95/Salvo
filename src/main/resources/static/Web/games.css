@@ -12,7 +12,7 @@ body {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 5% 43% 4% 43% 5%;
+    grid-template-columns: 5% 50% 4% 36% 5%;
     grid-template-rows: 5% 10% 5% 75% 5%
 }
 
@@ -65,7 +65,7 @@ body {
     justify-content: space-around;
 }
 
-.login-inputs>input {
+.login-inputs > input {
     width: 45%;
     text-align: center;
 }
@@ -88,6 +88,10 @@ body {
     align-items: center;
 }
 
+.welcome-text {
+    font-size: 3rem;
+}
+
 
 /*------------------------------Section-------------------------------*/
 
@@ -105,15 +109,15 @@ body {
 /*------------------------------Tables-------------------------------*/
 
 .table {
-    width: 90%;
+    width: 100%;
 }
 
-.leaderboard-table tr>td {
+.leaderboard-table tr > td {
     width: 15%;
     text-align: center;
 }
 
-.games-table tr>td {
+.games-table tr > td {
     width: 33%;
     text-align: center;
 }
