@@ -79,7 +79,7 @@
                     </td>
                     <td v-if="game.players == 1"></td>
                     <td v-if="game.playerOne == userName || game.playerTwo == userName">
-                        <p :href="'/web/game.html?gp='+game.id">PLAY</p>
+                        <a :href="'/web/game.html?gp='+game.id">PLAY</a>
                     </td>
                     <td v-if="game.players == 1 && game.playerOne != userName">
                         <p @click="joinGame(game.gameId)">JOIN</p>

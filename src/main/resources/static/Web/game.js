@@ -28,9 +28,9 @@ var game = new Vue({
         myTurn: false,
         gameFinished: false,
         counter: 0,
-        gameStatus:"",
-        
-        
+        gameStatus: "",
+
+
     },
     created: function () {
         this.getURL();
@@ -52,14 +52,14 @@ var game = new Vue({
                     game.printNickName();
                     game.salvoLocations = [];
                     game.gameEnded(game.data.game.gameplayers);
-                        
-                        if (!game.gameFinished) {
-                            game.allShipsSunk();
-                            game.gameLogic();
-                        } else {
-                            game.gameLogic();
-                            game.gameOver();
-                        }
+
+                    if (!game.gameFinished) {
+                        game.allShipsSunk();
+                        game.gameLogic();
+                    } else {
+                        game.gameLogic();
+                        game.gameOver();
+                    }
                 })
                 .catch(e => console.log(e))
         },
@@ -90,21 +90,14 @@ var game = new Vue({
                 this.addSunkClass(this.userSunkShips, "U")
 
             }
-            
+
             if (!this.myTurn && !this.gameFinished) {
                 setTimeout(this.getData(), 2000);
             }
         },
         fillTable: function () {
             let array = [];
-            const alphabet = this.alphabet;
-            const numbers = this.numbers
-            for (let i = 0; i < alphabet.length; i++) {
-                for (let j = 0; j < numbers.length; j++) {
-                    let element = alphabet[i] + numbers[j];
-                    array.push(element);
-                }
-            }
+            this.alphabet.map(a => game.numbers.map(n => array.push(a + n)))
             return array;
         },
         logout: function () {
@@ -121,66 +114,51 @@ var game = new Vue({
                 })
                 .catch(e => console.log(e))
         },
-        //Print Data
         printNickName: function () {
-            let gameplayers = this.data.game.gameplayers;
-            for (let i = 0; i < gameplayers.length; i++) {
-                if (gameplayers[i].gameplayer_id == this.userId) {
-                    this.userNickName = gameplayers[i].player.player_username;
+            this.data.game.gameplayers.forEach(gameplayer => {
+                if (gameplayer.gameplayer_id == game.userId) {
+                    game.userNickName = gameplayer.player.player_username;
                 } else {
-                    if (gameplayers[i].player == null) {
-                        this.enemyNickName = "Waiting for enemy"
+                    if (gameplayer.player == null) {
+                        game.enemyNickName = "Waiting for enemy"
                     } else {
-                        this.enemyNickName = gameplayers[i].player.player_username;
+                        game.enemyNickName = gameplayer.player.player_username;
                     }
                 }
-            }
+            })
         },
-        printShips: function (array, letter) {
-            let ships = array;
-            let shipsToPrint = [];
-            for (let i = 0; i < ships.length; i++) {
-                let location = ships[i].location;
-                let type = ships[i].type.toLocaleLowerCase();
-                let direction = this.detectShipDirection(location);
-                for (let j = 0; j < location.length; j++) {
-                    let shipLocation = location[j];
-                    let shipCell = document.getElementById(letter + shipLocation);
+        printShips: function (ships, letter) {
+            ships.forEach(ship => {
+                let location = ship.location;
+                let type = ship.type.toLocaleLowerCase();
+                let direction = game.detectShipDirection(location);
+                location.forEach((cell, i) => {
+                    let shipLocation = cell;
+                    let shipCell = document.getElementById(letter + cell);
                     shipCell.classList.add("ship-location");
-                    shipCell.classList.add(type + "-" + j + "-" + direction);
+                    shipCell.classList.add(type + "-" + i + "-" + direction);
                     shipCell.setAttribute("data-type", type);
-                }
-            }
+                })
+            })
         },
         printSalvos: function (salvos, letter) {
-            for (var i = 0; i < salvos.length; i++) {
-                var salvo = salvos[i];
-                var turn = salvo.turn;
-                var shots = salvo.location;
-                for (var j = 0; j < shots.length; j++) {
-                    var shot = shots[j];
-                    var cell = document.getElementById(letter + shot);
+            salvos.forEach(salvo => salvo.location
+                .forEach(shot => {
+                    let cell = document.getElementById(letter + shot);
                     if (cell.classList.contains("ship-location")) {
                         cell.setAttribute("class", "hitted");
-
                     } else {
                         cell.setAttribute("class", "fail");
                     }
                     cell.innerHTML = salvo.turn;
-                }
-            }
+                })
+            )
         },
         printHits: function (allHits) {
-            for (let i = 0; i < allHits.length; i++) {
-                let hits = allHits[i];
-                for (let j = 0; j < hits.length; j++) {
-                    var shot = hits[j];
-                    var cell = document.getElementById("E" + shot);
-                    cell.setAttribute("class", "hitted");
-                }
-            }
+            allHits
+                .forEach(hits => hits
+                    .forEach(shot => document.getElementById("E" + shot).setAttribute("class", "hitted")))
         },
-        //Place Ships
         detectShipDirection: function (array) {
             let direction;
             if (array[0].charAt(0) == array[1].charAt(0)) {
@@ -211,32 +189,31 @@ var game = new Vue({
             let ship = document.getElementsByClassName("selected-ship")[0];
             let selectedCell = document.getElementById(cellId);
 
-            let loop;
+            let loops;
             let type;
             let locationArray = [];
 
             if (ship.id == "destroyer") {
-                loop = 4;
+                loops = 4;
                 type = "destroyer";
             }
             if (ship.id == "cruiser") {
-                loop = 3;
+                loops = 3;
                 type = "cruiser";
             }
             if (ship.id == "submarine") {
-                loop = 3;
+                loops = 3;
                 type = "submarine";
             }
             if (ship.id == "boat") {
-                loop = 2;
+                loops = 2;
                 type = "boat";
             }
 
-            //Create the ship Object
             let letter = selectedCell.id.charAt(1);
             let number = parseFloat(selectedCell.id.charAt(2));
             locationArray.push(letter + number)
-            for (let i = 0; i < loop; i++) {
+            loops.forEach(loop => {
                 if (ship.classList.contains("h")) {
                     number++;
                     locationArray.push(letter + number)
@@ -244,21 +221,22 @@ var game = new Vue({
                     letter = this.alphabet[this.alphabet.indexOf(letter) + 1];
                     locationArray.push(letter + number);
                 }
-            }
+            })
 
             let newShip = {
                 type: type,
                 location: locationArray,
             }
 
-            for (let i = 0; i < this.shipsToPlace.length; i++) {
-                if (this.shipsToPlace[i].type == newShip.type) {
-                    var index = this.shipsToPlace.indexOf(this.shipsToPlace[i]);
+            this.shipsToPlace.forEach(ship => {
+                if (ship.type == newShip.type) {
+                    var index = this.shipsToPlace.indexOf(ship);
                     if (index > -1) {
                         this.shipsToPlace.splice(index, 1);
                     }
                 }
-            }
+            });
+
             this.shipsToPlace.push(newShip)
             this.placeingRules(this.shipsToPlace)
 
@@ -272,37 +250,31 @@ var game = new Vue({
             }
         },
         removeOldShip: function () {
-            let selectedShip = this.selectedShip.id;
-            let oldShip = document.querySelectorAll("[data-type='" + selectedShip + "']")
-            for (let i = 0; i < oldShip.length; i++) {
-                oldShip[i].setAttribute("class", "none-border-cell");
-            }
-
+            document.querySelectorAll("[data-type='" + this.selectedShip.id + "']")
+                .forEach(ship => oldShip.setAttribute("class", "none-border-cell"));
         },
         placeingRules: function (array) {
             let allLocations = [];
-            for (let i = 0; i < array.length; i++) {
-                let eachShip = array[i];
-                let type = eachShip.type;
-                let location = eachShip.location;
-                for (let j = 0; j < location.length; j++) {
-                    if (!this.alphaNumeric.includes(location[j])) {
-                        var index = array.indexOf(eachShip);
-                        if (index > -1) {
-                            array.splice(index, 1);
-                        }
-                    } else {
-                        if (allLocations.includes(location[j])) {
-                            var index = array.indexOf(eachShip);
+            array
+                .forEach(eachShip => eachShip.location
+                    .forEach(location => {
+                        if (!this.alphaNumeric.includes(location)) {
+                            let index = array.indexOf(eachShip);
                             if (index > -1) {
                                 array.splice(index, 1);
                             }
                         } else {
-                            allLocations.push(location[j])
+                            if (allLocations.includes(location)) {
+                                let index = array.indexOf(eachShip);
+                                if (index > -1) {
+                                    array.splice(index, 1);
+                                }
+                            } else {
+                                allLocations.push(location)
+                            }
                         }
-                    }
-                }
-            }
+                    })
+                )
             return array;
         },
         rotateShip: function (shipId) {
@@ -316,9 +288,7 @@ var game = new Vue({
             }
         },
         postShips: function () {
-
             if (this.shipsToPlace.length == 4) {
-
                 fetch("/api/games/players/" + this.userId + "/ships", {
                         credentials: 'include',
                         method: 'POST',
@@ -334,10 +304,8 @@ var game = new Vue({
                 alert("Error: Place all ships")
             }
         },
-        //Fire Salvoes
         postSalvoes: function () {
             let locations = this.locationsToPost();
-
             fetch("/api/games/players/" + this.userId + "/salvoes", {
                     credentials: 'include',
                     method: 'POST',
@@ -357,11 +325,11 @@ var game = new Vue({
                 .catch(e => console.log(e))
         },
         selectCellToShot: function (cellId) {
-            var allCells = this.salvoLocations;
-            var cell = document.getElementById(cellId);
+            let allCells = this.salvoLocations;
+            let cell = document.getElementById(cellId);
             if (!cell.classList.contains("shot")) {
                 if (allCells.length == 4) {
-                    var cellRemoved = allCells.splice(0, 1);
+                    let cellRemoved = allCells.splice(0, 1);
                     cellRemoved[0].classList.remove("shot");
                 }
                 allCells.push(cell);
@@ -371,51 +339,38 @@ var game = new Vue({
             }
         },
         locationsToPost: function () {
-            let cells = this.salvoLocations;
             let locations = [];
-            for (let i = 0; i < cells.length; i++) {
-                let cellId = cells[i].id;
-                let location = cellId.charAt(1) + cellId.charAt(2);
-                locations.push(location);
-            }
+            this.salvoLocations
+                .forEach(cell => locations.push(cell.id.charAt(1) + cell.id.charAt(2)))
             return locations;
         },
-        //See sunk ships
         printSunk: function (array) {
             var sunkShips = [];
-            for (let i = 0; i < array.length; i++) {
-                if (array[i].sunk) {
-                    let locations = array[i]["ship-location"]
-                    for (let j = 0; j < locations.length; j++) {
-                        sunkShips.push(locations[j]);
-                    }
-                }
-            }
+            array
+                .filter(ship => ship.sunk)
+                .map(ship => ship["ship-location"].forEach(cell => sunkShips.push(cell)))
             return sunkShips;
         },
         addSunkClass: function (array, letter) {
-            for (let i = 0; i < array.length; i++) {
-                document.getElementById(letter + array[i]).setAttribute("class", "sunk");
-            }
+            array.forEach(cell => document.getElementById(letter + cell).setAttribute("class", "sunk"))
         },
         gameEnded: function (gameplayers) {
-            for (let i = 0; i < gameplayers.length; i++) {
-                if (gameplayers[i].score != null) {
-                    this.gameFinished = true;
-                }
-            }
+            gameplayers.forEach(gameplayer => {
+                if (gameplayer.score != null) 
+                    game.gameFinished = true;
+            })
         },
         countSunks: function (array) {
             let counter = 0;
             for (var i = 0; i < array.length; i++) {
-                if (array[i].sunk ==  true) {
+                if (array[i].sunk == true) {
                     counter++
                 }
             }
             return counter;
         },
-        allShipsSunk:  function () {
-            var userTurn  = this.data.user_turn;
+        allShipsSunk: function () {
+            var userTurn = this.data.user_turn;
             var enemyTurn = this.data.enemy_turn;
             if (userTurn == enemyTurn) {
                 if (this.countSunks(this.data.user_ship_status) == 4 || this.countSunks(this.data.enemy_ship_status) == 4) {
@@ -430,9 +385,9 @@ var game = new Vue({
             } else if (this.data.user_score == 0) {
                 this.gameStatus = "You lose"
             } else {
-               this.gameStatus = "It's a tie" 
+                this.gameStatus = "It's a tie"
             }
-            
+
         },
     },
 })
