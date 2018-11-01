@@ -16,7 +16,7 @@
     <div class="body" id="game">
         <div class="container-fluid header">
             <div class="back-button-div container">
-                <a class="btn" href="/web/games.html">Back to Menu</a>
+                <a class="btn" href="/Web/games.html">Back to Menu</a>
                 <a @click="logout()" class="btn">log out</a>
                 <a class="btn" @click="postShips" v-if="placingShips">Place Ships</a>
                 <a class="btn" @click="postSalvoes" v-if="!placingShips && !waitingForOponent && myTurn">Shoot em up</a>
@@ -89,7 +89,7 @@
         </div>
         <div class="container game-over" v-if="placingShips == false && gameFinished == true">
             <p>{{gameStatus}}</p>
-            <a class="btn" href="/web/games.html">Back to Menu</a>
+            <a class="btn" href="/Web/games.html">Back to Menu</a>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

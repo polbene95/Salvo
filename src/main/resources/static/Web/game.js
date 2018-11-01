@@ -100,7 +100,7 @@ var game = new Vue({
                     },
                 })
                 .then(r => {
-                    window.location.replace("/web/games.html");
+                    window.location.replace("/Web/games.html");
                 })
                 .catch(e => console.log(e))
         },

@@ -21,7 +21,7 @@
             <div class="alert-login-fail" v-if="alertLogin == true">
                 {{error}}, try again
             </div>
-            <img src="images/logo.jpg" alt="ship logo">
+            <img src="/images/logo.jpg" alt="ship logo">
             <div class="login-inputs">
                 <input type="text" name="username" id="username" placeholder="Username">
                 <input type="text" name="password" id="password" placeholder="Password">
@@ -77,7 +77,7 @@
                     </td>
                     <td v-if="game.players == 1"></td>
                     <td v-if="game.playerOne == userName || game.playerTwo == userName">
-                        <a :href="'/web/game.html?gp='+game.id">PLAY</a>
+                        <a :href="'/Web/game.html?gp='+game.id">PLAY</a>
                     </td>
                     <td v-if="game.players == 1 && game.playerOne != userName">
                         <a @click="joinGame(game.gameId)">JOIN</a>

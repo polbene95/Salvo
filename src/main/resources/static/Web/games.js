@@ -129,7 +129,7 @@ const games = new Vue({
                     }
                 })
                 .then(response => response.json())
-                .then(json => location.replace("/web/game.html?gp=" + json.id))
+                .then(json => location.replace("/Web/game.html?gp=" + json.id))
                 .catch(error => console.log(error))
         },
         joinGame: function (gameId) {
@@ -142,7 +142,7 @@ const games = new Vue({
                     },
                 })
                 .then(response => response.json())
-                .then(json => location.replace("/web/game.html?gp=" + json.id))
+                .then(json => location.replace("/Web/game.html?gp=" + json.id))
                 .catch(e => console.log(e))
         },
         changeTable: function () {
