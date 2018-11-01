@@ -268,8 +268,8 @@ var game = new Vue({
             return array;
         },
         rotateShip: function (shipId) {
-            this.setShipsDirectionToHoritzontal();
             let ship = document.getElementById(shipId);
+            this.setShipsDirectionToHoritzontal(ship);
             if (ship.classList.contains("h")) {
                 ship.classList.remove("h");
                 ship.classList.add("v");
@@ -278,12 +278,14 @@ var game = new Vue({
                 ship.classList.add("h");
             }
         },
-        setShipsDirectionToHoritzontal() {
+        setShipsDirectionToHoritzontal(selectedShip) {
             const ships = document.getElementsByClassName("ship-creation");
             for (let i = 0; i < ships.length; i++) {
                 let ship = ships[i];
-                ship.classList.remove("v");
-                ship.classList.add("h");
+                if (ship != selectedShip) {
+                    ship.classList.remove("v");
+                    ship.classList.add("h");
+                }
             }
 
 
