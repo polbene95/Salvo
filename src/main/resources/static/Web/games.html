@@ -27,8 +27,8 @@
                 <input type="text" name="password" id="password" placeholder="Password">
             </div>
             <div class="login-buttons">
-                <div @click="login()" class="btn">log in</div>
-                <div @click="signup()" class="btn">sign up</div>
+                <a class="btn" @click="login()" class="btn">log in</a>
+                <a class="btn" @click="signup()" class="btn">sign up</a>
             </div>
         </div>
         <div class="container header" v-if="userLoged == true">
@@ -36,16 +36,15 @@
                 Welcome {{userName}}
             </div>
             <div class="header-buttons nav">
-                <div @click="logout()" class="btn">log out</div>
-                <div @click="createGame()" class="btn">new game</div>
+                <a class="btn" @click="logout()" class="btn">log out</a>
+                <a class="btn" @click="createGame()" class="btn">new game</a>
             </div>
         </div>
         <table class="table leaderboard-table" v-if="userLoged == true">
             <thead>
                 <tr>
-<!--                    <td>ID</td>-->
                     <td>Username</td>
-                    <td>Total Score</td>
+                    <td>Score</td>
                     <td>Wins</td>
                     <td>Losses</td>
                     <td>Ties</td>
@@ -53,7 +52,6 @@
             </thead>
             <tbody>
                 <tr v-for="player in leaderboardJSON">
-<!--                    <td>{{player.player_id}}</td>-->
                     <td>{{player.player_username}}</td>
                     <td>{{player.total_score}}</td>
                     <td>{{player.win}}</td>
@@ -82,7 +80,7 @@
                         <a :href="'/web/game.html?gp='+game.id">PLAY</a>
                     </td>
                     <td v-if="game.players == 1 && game.playerOne != userName">
-                        <p @click="joinGame(game.gameId)">JOIN</p>
+                        <a @click="joinGame(game.gameId)">JOIN</a>
                     </td>
                     <td v-if="game.players == 2 && (game.playerOne != userName  && game.playerTwo != userName )">
                         <p>IN GAME</p>

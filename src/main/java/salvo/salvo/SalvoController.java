@@ -30,7 +30,6 @@ public class SalvoController {
     @Autowired
     private ScoreRepository scoreRepository;
 
-    //RequestMapping
     @RequestMapping(path="/games", method = RequestMethod.GET)
     private Map<String,Object> listOfGames (Authentication authentication) {
         Map<String,Object> gameMap = new LinkedHashMap<>();
@@ -136,8 +135,8 @@ public class SalvoController {
     }
 
     @RequestMapping(path="/leaderboard", method = RequestMethod.GET)
-    private List<Object> leaderBoard() {
-        List<Object> scoreList = new ArrayList<>();
+    private List<Map<String,Object>> leaderBoard() {
+        List<Map<String,Object>> scoreList = new ArrayList<>();
         List<Player> players = playerRepository.findAll();
         for (Player player : players) {
             Integer wins = 0;
@@ -233,7 +232,6 @@ public class SalvoController {
         }
     }
 
-    //Functional methods
     private GamePlayer enemyGamePlayer (GamePlayer gamePlayer) {
         Set<GamePlayer> gamePlayers = gamePlayer.getGame().getGamePlayers();
         List<GamePlayer> gamePlayerList = new ArrayList<>();
@@ -406,7 +404,6 @@ public class SalvoController {
         return shipMap;
     }
 
-    //DTO
     private Map<String, Object> getGame (Game game) {
         Map<String, Object> gameMap = new LinkedHashMap<>();
         gameMap.put("game_id", game.getId());
@@ -457,7 +454,6 @@ public class SalvoController {
         return salvoList;
     }
 
-    //Make Map Method
     private Map<String, Object> makeMap(String key, Object value) {
         Map<String, Object> map = new HashMap<>();
         map.put(key, value);

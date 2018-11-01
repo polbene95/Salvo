@@ -10,9 +10,17 @@ body {
     padding: 1% 0;
 }
 
-.btn {
+a.btn {
     background: #8080804f;
-    border-radius: 75px;
+    border-radius: 5px;
+    color: #007bff;
+    cursor: pointer;
+}
+
+a.btn:not([href]):not([tabindex]):hover {
+    color: #212529;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .status-div {

@@ -3,7 +3,6 @@ var game = new Vue({
     data: {
         data: [],
         userId: "",
-        //In game variables
         userNickName: "",
         enemyNickName: "Waiting for Enemy",
         userSalvos: [],
@@ -11,26 +10,20 @@ var game = new Vue({
         enemyTable: [],
         enemySunkShips: [],
         userSunkShips: [],
-        //Placing Ships
         placingShips: true,
         shipsToPlace: [],
         selectedShip: "",
         errorOutSide: false,
         errorOverLapping: false,
-        //Fireing Salvoes
         salvoLocations: [],
-        //Static Arrays
         alphabet: ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
         numbers: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
         alphaNumeric: [],
-        //Game Logic
         waitingForOponent: true,
         myTurn: false,
         gameFinished: false,
         counter: 0,
         gameStatus: "",
-
-
     },
     created: function () {
         this.getURL();
@@ -79,7 +72,6 @@ var game = new Vue({
                 if (this.data.enemy_salvos.length != 0) {
                     this.enemySalvos = this.data.enemy_salvos;
                     this.printSalvos(this.enemySalvos, "U");
-
                 }
                 if (this.data.hits.length != 0) {
                     this.printHits(this.data.hits)
@@ -88,9 +80,7 @@ var game = new Vue({
                 this.userSunkShips = this.printSunk(this.data.user_ship_status);
                 this.addSunkClass(this.enemySunkShips, "E")
                 this.addSunkClass(this.userSunkShips, "U")
-
             }
-
             if (!this.myTurn && !this.gameFinished) {
                 setTimeout(this.getData(), 2000);
             }
@@ -213,7 +203,7 @@ var game = new Vue({
             let letter = selectedCell.id.charAt(1);
             let number = parseFloat(selectedCell.id.charAt(2));
             locationArray.push(letter + number)
-            loops.forEach(loop => {
+            for (let i = 0; i < loops; i++) {
                 if (ship.classList.contains("h")) {
                     number++;
                     locationArray.push(letter + number)
@@ -221,7 +211,7 @@ var game = new Vue({
                     letter = this.alphabet[this.alphabet.indexOf(letter) + 1];
                     locationArray.push(letter + number);
                 }
-            })
+            }
 
             let newShip = {
                 type: type,
@@ -251,7 +241,7 @@ var game = new Vue({
         },
         removeOldShip: function () {
             document.querySelectorAll("[data-type='" + this.selectedShip.id + "']")
-                .forEach(ship => oldShip.setAttribute("class", "none-border-cell"));
+                .forEach(ship => ship.setAttribute("class", "none-border-cell"));
         },
         placeingRules: function (array) {
             let allLocations = [];
@@ -278,6 +268,7 @@ var game = new Vue({
             return array;
         },
         rotateShip: function (shipId) {
+            this.setShipsDirectionToHoritzontal();
             let ship = document.getElementById(shipId);
             if (ship.classList.contains("h")) {
                 ship.classList.remove("h");
@@ -286,6 +277,16 @@ var game = new Vue({
                 ship.classList.remove("v");
                 ship.classList.add("h");
             }
+        },
+        setShipsDirectionToHoritzontal() {
+            const ships = document.getElementsByClassName("ship-creation");
+            for (let i = 0; i < ships.length; i++) {
+                let ship = ships[i];
+                ship.classList.remove("v");
+                ship.classList.add("h");
+            }
+
+
         },
         postShips: function () {
             if (this.shipsToPlace.length == 4) {
@@ -335,6 +336,10 @@ var game = new Vue({
                 allCells.push(cell);
                 cell.classList.add("shot");
             } else {
+                let index = allCells.indexOf(cell);
+                if (index > -1) {
+                    allCells.splice(index, 1);
+                }
                 cell.classList.remove("shot");
             }
         },
@@ -356,7 +361,7 @@ var game = new Vue({
         },
         gameEnded: function (gameplayers) {
             gameplayers.forEach(gameplayer => {
-                if (gameplayer.score != null) 
+                if (gameplayer.score != null)
                     game.gameFinished = true;
             })
         },
