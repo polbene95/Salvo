@@ -9,6 +9,26 @@ body {
     border-bottom: 1px solid black;
     padding: 1% 0;
 }
+.header > div {
+    display: flex;
+}
+
+.back-button-div {
+    width: 70%;
+}
+.hint-div {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.hint-div > p {
+    margin: 0;
+    width: fit-content;
+    font-weight: bold;
+    cursor:pointer;
+}
 
 a.btn {
     background: #8080804f;
@@ -426,4 +446,22 @@ td {
 .game-over > p {
     margin: 0;
     font-size: 3rem;
+}
+
+/*DropDown Hint*/
+
+.dropdown {
+    position: relative;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    border: 1px black solid;
+    z-index: 3;
+    background: white;
+    padding: 5px 15px;
+}
+.dropdown:hover > .dropdown-content {
+    display: block;
 }

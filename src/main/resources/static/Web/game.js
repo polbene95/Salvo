@@ -24,6 +24,8 @@ var game = new Vue({
         gameFinished: false,
         counter: 0,
         gameStatus: "",
+        hintMessage: "Select a ship and then click on the grid to place it, if you want to change a ship position just select it again and click somewhere else.",
+        hintShootingSalvos: "Click on the opponent grid to select which position you want to shot. You have 4 shoots per turn. If you want to unselect a selected cell just click on it."
     },
     created: function () {
         this.getURL();
@@ -59,6 +61,7 @@ var game = new Vue({
         gameLogic: function () {
             if (this.data.ships.length != 0) {
                 this.placingShips = false;
+                this.hintMessage = this.hintShootingSalvos;
                 this.userShips = this.data.ships;
                 this.printShips(this.userShips, "U");
             }
@@ -330,19 +333,22 @@ var game = new Vue({
         selectCellToShot: function (cellId) {
             let allCells = this.salvoLocations;
             let cell = document.getElementById(cellId);
-            if (!cell.classList.contains("shot")) {
-                if (allCells.length == 4) {
-                    let cellRemoved = allCells.splice(0, 1);
-                    cellRemoved[0].classList.remove("shot");
+            if (this.myTurn) {
+                if (!cell.classList.contains("shot")) {
+                    console.log(allCells)
+                    if (allCells.length == 4) {
+                        let cellRemoved = allCells.splice(0, 1);
+                        cellRemoved[0].classList.remove("shot");
+                    }
+                    allCells.push(cell);
+                    cell.classList.add("shot");
+                } else {
+                    let index = allCells.indexOf(cell);
+                    if (index > -1) {
+                        allCells.splice(index, 1);
+                    }
+                    cell.classList.remove("shot");
                 }
-                allCells.push(cell);
-                cell.classList.add("shot");
-            } else {
-                let index = allCells.indexOf(cell);
-                if (index > -1) {
-                    allCells.splice(index, 1);
-                }
-                cell.classList.remove("shot");
             }
         },
         locationsToPost: function () {
@@ -391,8 +397,10 @@ var game = new Vue({
                 this.gameStatus = "You win"
             } else if (this.data.user_score == 0) {
                 this.gameStatus = "You lose"
-            } else {
+            } else if (this.data.user_score == 0.5) {
                 this.gameStatus = "It's a tie"
+            } else {
+                this.getData();
             }
 
         },

@@ -347,9 +347,7 @@ public class SalvoController {
             List<String> playerSalvos = getSalvoLocations(gamePlayer);
             enemyShips.stream()
                     .filter(ship -> !ship.getSunk())
-                    .forEach(ship -> {
-                        shipIsSunk(playerSalvos, ship);
-                    });
+                    .forEach(ship -> shipIsSunk(playerSalvos, ship));
         }
     }
 
@@ -362,10 +360,11 @@ public class SalvoController {
     private void setFinalScore(GamePlayer gamePlayer) {
         Boolean user = allShipsSunk(arrayOfSunk(gamePlayer.getShips()));
         Boolean enemy = allShipsSunk(arrayOfSunk(enemyGamePlayer(gamePlayer).getShips()));
+
         if (!user && enemy){
-            scoreRepository.save(setScore(gamePlayer,0.0));
-        } else if (user && !enemy){
             scoreRepository.save(setScore(gamePlayer,1.0));
+        } else if (user && !enemy){
+            scoreRepository.save(setScore(gamePlayer,0.0));
         } else if (user && enemy) {
             scoreRepository.save(setScore(gamePlayer,0.5));
         }
@@ -378,7 +377,7 @@ public class SalvoController {
     private List<String> arrayOfSunk(Set<Ship> ships) {
         List<String> arrayOfSunk = new ArrayList<>();
         for (Ship ship : ships) {
-            if (ship.getSunk()) {
+            if (ship.getSunk() == true) {
                 arrayOfSunk.add(ship.getType());
             }
         }
